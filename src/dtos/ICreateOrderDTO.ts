@@ -1,7 +1,6 @@
 import User from '../models/User';
 
 interface IProduct {
-  product_id: string;
   id_product: number;
   reference: string;
   product: string;
