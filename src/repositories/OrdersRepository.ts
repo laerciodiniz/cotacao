@@ -36,6 +36,17 @@ class OrdersRepository implements IOrdersRepository {
 
     return order;
   }
+
+  public async findByOrderUser(
+    user: string,
+    id_quotation: number,
+  ): Promise<Order | undefined> {
+    const findOrder = await this.ormRepository.findOne({
+      where: { user, id_quotation },
+    });
+
+    return findOrder;
+  }
 }
 
 export default OrdersRepository;

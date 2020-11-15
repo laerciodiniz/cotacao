@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
+import AppError from '../errors/AppError';
 import IUsersRepository from '../repositories/IUsersRepository';
 import Order from '../models/Order';
 import IOrdersRepository from '../repositories/IOrdersRepository';
@@ -37,7 +38,16 @@ class CreateOrderService {
     const userExists = await this.usersRepository.findById(user_id);
 
     if (!userExists) {
-      throw new Error('Could not find any user with the given id');
+      throw new AppError('Could not find any user with the given id');
+    }
+
+    const orderExists = await this.ordersRepository.findByOrderUser(
+      user_id,
+      id_quotation,
+    );
+
+    if (orderExists) {
+      throw new AppError('Order already exists for this user');
     }
 
     const serializedProducts = products.map(product => ({
